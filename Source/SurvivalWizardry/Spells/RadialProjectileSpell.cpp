@@ -1,14 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Spell2.h"
+#include "RadialProjectileSpell.h"
 #include "Engine/World.h"
-#include "ProjectileBase.h"
+#include "../ProjectileBase.h"
 #include "TimerManager.h"
 #include "Kismet/GameplayStatics.h"
-#include "Wizard.h"
+#include "../Wizard.h"
 
-void ASpell2::CastProjectile()
+void ARadialProjectileSpell::CastProjectile()
 {
 	FVector Location = Wizard->GetActorLocation();
 	Location.Z = ProjectileLocationZAxis;

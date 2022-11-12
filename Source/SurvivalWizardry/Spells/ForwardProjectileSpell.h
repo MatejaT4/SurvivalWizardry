@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "SpellBase.h"
-#include "Spell1.generated.h"
+#include "../SpellBase.h"
+#include "ForwardProjectileSpell.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SURVIVALWIZARDRY_API ASpell1 : public ASpellBase
+class SURVIVALWIZARDRY_API AForwardProjectileSpell : public ASpellBase
 {
 	GENERATED_BODY()
 	
