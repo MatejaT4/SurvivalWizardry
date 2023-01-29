@@ -18,51 +18,45 @@
 
 ASurvivalWizardryGameModeBase::ASurvivalWizardryGameModeBase()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 }
 
 void ASurvivalWizardryGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
-	//inicijalizacija
-	MyPlayerController = Cast<AMyPlayerController>(UGameplayStatics::GetPlayerController(this, 0));
-	Wizard = Cast<AWizard>(UGameplayStatics::GetPlayerPawn(this,0));
-	World = GetWorld();
-    StartGameCountdown();
-}
 
-void ASurvivalWizardryGameModeBase::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
+	MyPlayerController = Cast<AMyPlayerController>(UGameplayStatics::GetPlayerController(this, 0));
+    if(MyPlayerController)
+    {
+        MyPlayerController->SetPlayerEnabledState(false);  
+    }
+    Wizard = Cast<AWizard>(UGameplayStatics::GetPlayerPawn(this,0));
+	World = GetWorld();
+    minutes = GameLengthMinutes;
+    seconds = GameLengthSeconds;
+    StartGameCountdown();
 }
 
 void ASurvivalWizardryGameModeBase::StartGameCountdown()
 {
-	if(MyPlayerController)
-    {
-        MyPlayerController->SetPlayerEnabledState(false);    
-        StartGameCountdownEvent();
-        FTimerHandle PlayerEnableTimerHandle;
-        FTimerDelegate PlayerEnableTimerDelegate = FTimerDelegate::CreateUObject(this, &ASurvivalWizardryGameModeBase::StartGame, true);
-        GetWorldTimerManager().SetTimer(PlayerEnableTimerHandle, PlayerEnableTimerDelegate, 4, false);
-    }
+    GetWorldTimerManager().SetTimer(CountdownTimerHandle, this, &ASurvivalWizardryGameModeBase::StartGame, GameCountdownLength, false);	
+    StartGameCountdownEvent();
 }
 
-void ASurvivalWizardryGameModeBase::StartGame(bool bStart)
+void ASurvivalWizardryGameModeBase::StartGame()
 {
-	MyPlayerController->SetPlayerEnabledState(bStart);
+	MyPlayerController->SetPlayerEnabledState(true);
     Wizard->HandleGameStart();
-	StartSpawningEvent();
+    GetWorldTimerManager().SetTimer(MatchTimerHandle, this, &ASurvivalWizardryGameModeBase::Clock, 1.0, true);	
     StartGameEvent();
-    GetWorldTimerManager().SetTimer(TimerHandle, this, &ASurvivalWizardryGameModeBase::Clock, 1.0, true);	
 }
 
 void ASurvivalWizardryGameModeBase::Clock()
 {
     if(minutes==0 && seconds==0)
     {
-        GetWorldTimerManager().ClearTimer(TimerHandle);
-        GameEnded(true);
+        GetWorldTimerManager().ClearTimer(MatchTimerHandle);
+        EndGame(true);
     }
     else
     {
@@ -92,7 +86,7 @@ void ASurvivalWizardryGameModeBase::ActorDied(AActor* DeadActor)
 {
     if(DeadActor == Wizard)
     {
-        GameEnded(false);
+        EndGame(false);
     }
     else if (AEnemyBase* DeadEnemy = Cast<AEnemyBase>(DeadActor))
     {
@@ -129,10 +123,10 @@ int ASurvivalWizardryGameModeBase::GetCurrentLevel() const
 	return level;
 }
 
-void ASurvivalWizardryGameModeBase::GameEnded(bool IsVictorious)
+void ASurvivalWizardryGameModeBase::EndGame(bool IsVictorious)
 {
-    Wizard->HandleGameEnd(true);
-    StopSpawningEvent();
+    Wizard->HandleGameEnd(IsVictorious);
+
     if(MyPlayerController)
     {
         MyPlayerController->SetPlayerEnabledState(false);

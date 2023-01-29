@@ -15,20 +15,6 @@ public:
 	ASpawner();
 
 	UPROPERTY(EditAnywhere, Category = "Spawn")
-	float EnemyTimer = 1.f;
-	
-	// UPROPERTY(EditAnywhere, Category = "Spawn")
-	// float MinRangeX = 200.f;
-	// UPROPERTY(EditAnywhere, Category = "Spawn")
-	// float MaxRangeX = 1000.f;
-	// UPROPERTY(EditAnywhere, Category = "Spawn")
-	// float MinRangeY = 500.f;
-	// UPROPERTY(EditAnywhere, Category = "Spawn")
-	// float MaxRangeY = 1000.f;
-	UPROPERTY(EditAnywhere, Category = "Spawn")
-	float EnemyLocationZAxis = 90.f;
-
-	UPROPERTY(EditAnywhere, Category = "Spawn")
 	float ArenaBottomLeftX = -3900.f;
 	UPROPERTY(EditAnywhere, Category = "Spawn")
 	float ArenaBottomLeftY = 4750.f;
@@ -36,22 +22,6 @@ public:
 	float ArenaLengthX = 8750.f;
 	UPROPERTY(EditAnywhere, Category = "Spawn")
 	float ArenaLengthY = 9700.f;
-	UPROPERTY(EditAnywhere, Category = "Spawn")
-	float ForbiddenDistanceFromPlayerXBottom = 500.f;
-	UPROPERTY(EditAnywhere, Category = "Spawn")
-	float ForbiddenDistanceFromPlayerXTop = 2000.f;
-	UPROPERTY(EditAnywhere, Category = "Spawn")
-	float ForbiddenDistanceFromPlayerYLeft = 1000.f;
-	UPROPERTY(EditAnywhere, Category = "Spawn")
-	float ForbiddenDistanceFromPlayerYRight = 1000.f;
-	UPROPERTY(EditAnywhere, Category = "Spawn")
-	float AllowedDistanceFromPlayerXBottom = 3000.f;
-	UPROPERTY(EditAnywhere, Category = "Spawn")
-	float AllowedDistanceFromPlayerXTop = 3000.f;
-	UPROPERTY(EditAnywhere, Category = "Spawn")
-	float AllowedDistanceFromPlayerYLeft = 3000.f;
-	UPROPERTY(EditAnywhere, Category = "Spawn")
-	float AllowedDistanceFromPlayerYRight = 3000.f;
 
 protected:
 	virtual void BeginPlay() override;
@@ -64,22 +34,18 @@ private:
 	class AWizard* Wizard;
 
 	UFUNCTION(BlueprintCallable, Category = "Spawn", meta = (AllowPrivateAccess = "true"))
-	void SpawnHealtHPack(TSubclassOf<class AHealthPack> HealthPackClass, float LocationZAxis2);
+	void SpawnOnCircleAroundWizard(UClass* SpawningType,  float SpawnHeight, float Radius);
 
 	UFUNCTION(BlueprintCallable, Category = "Spawn", meta = (AllowPrivateAccess = "true"))
-	void SpawnEnemy(TSubclassOf<class AEnemyBase> EnemyType, float EnemyLocationZAxis2);
+	void SpawnInSquareAroundWizard(UClass* SpawningType,  float SpawnHeight, float Length);
 
 	UFUNCTION(BlueprintCallable, Category = "Spawn", meta = (AllowPrivateAccess = "true"))
-	void SpawnMultipleEnemies(int NumberOfEnemies, TSubclassOf<class AEnemyBase> EnemyType,  float EnemyLocationZAxis2);
+	void SpawnInRingAroundWizard(UClass* SpawningType,  float SpawnHeight, float Radius1, float Radius2);
 
 	UFUNCTION(BlueprintCallable, Category = "Spawn", meta = (AllowPrivateAccess = "true"))
-	void SpawnHorde(int NumberOfEnemies, TSubclassOf<class AEnemyBase> EnemyType,  float EnemyLocationZAxis2);
-
-	FTimerHandle EnemyTimerHandle;
+	void SpawnInArena(UClass* SpawningType,  float SpawnHeight);
 
 	UPROPERTY()
 	UWorld* World;
-
-	bool GenerateLocation(FVector& Location);
 
 };

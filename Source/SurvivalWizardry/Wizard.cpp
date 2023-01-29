@@ -58,8 +58,8 @@ void AWizard::Tick(float DeltaTime)
 
 void AWizard::HandleGameEnd(bool IsVictory)
 {
+	IsVictorious = IsVictory;
 	if(IsVictory==false) IsDead=true;
-	else IsVictorious=true;
 
 	SetActorEnableCollision(false);
 	SetActorTickEnabled(false);

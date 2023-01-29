@@ -23,7 +23,6 @@ private:
 //character movement
 	void MoveUpDown(float Value);
 	void MoveLeftRight(float Value);
-
 	// UPROPERTY(EDitAnywhere)
 	// float RestartDelay=4.f;
 	// FTimerHandle RestartTimerHandle;

@@ -23,6 +23,7 @@ public:
 	void HandleGameEnd(bool IsVictory);
 	void HandleGameStart();
 	void BecomeInvincible(float Duration);
+	void StopBeingInvincible();
 	bool CheckIfInvincible();
 	bool Heal(float HealValue);
 
@@ -57,8 +58,6 @@ private:
 	
 	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	bool IsVictorious=false;
-
-	void StopBeingInvincible();
 
 	UFUNCTION(BlueprintPure)
 	float GetHealthPercent() const;

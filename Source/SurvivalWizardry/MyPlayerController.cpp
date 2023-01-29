@@ -31,6 +31,7 @@ void AMyPlayerController::MoveLeftRight(float Value)
 	GetPawn()->AddMovementInput(WorldDirection, Value);
 }
 
+
 void AMyPlayerController::SetPlayerEnabledState(bool bPlayerEnabled)
 {
 	
@@ -53,7 +54,7 @@ void AMyPlayerController::SetPlayerEnabledState(bool bPlayerEnabled)
 // }
 void AMyPlayerController::BeginPlay()
 {
-	// Super::BeginPlay();
+	Super::BeginPlay();
 	// HUD = CreateWidget(this, MyHUDClass);
 	// if (HUD != nullptr) HUD->AddToViewport();
 }

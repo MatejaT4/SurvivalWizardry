@@ -37,6 +37,10 @@ void AExpPickuble::OnOverlap(
 {
 	if(Cast<ACharacter>(OtherActor) == UGameplayStatics::GetPlayerCharacter(GetWorld(),0))
 	{	
+		if(PickUpSounds.IsEmpty() == false)
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, PickUpSounds[FMath::RandRange(0,PickUpSounds.Num()-1)], GetActorLocation());
+		}	
 		Cast<ASurvivalWizardryGameModeBase>(UGameplayStatics::GetGameMode(this))->AddExperience(Exp);
 		Destroy();
 	}

@@ -18,6 +18,7 @@ AHealthPack::AHealthPack()
 void AHealthPack::BeginPlay()
 {
 	Super::BeginPlay();
+	wizard = Cast<AWizard>(UGameplayStatics::GetPlayerPawn(this,0));
 	CollisionMesh->OnComponentBeginOverlap.AddDynamic(this, &AHealthPack::OnOverlap);
 }
 

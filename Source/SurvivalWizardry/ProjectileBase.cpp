@@ -51,8 +51,7 @@ void AProjectileBase::OnOverlap(
 		else
 		{
 			Destroy();
-		}
-			
+		}	
 	}
 }
 

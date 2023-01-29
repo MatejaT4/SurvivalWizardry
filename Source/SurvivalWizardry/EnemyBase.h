@@ -50,6 +50,12 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	class UHealthComponent* HealthComponent;
 
+	UPROPERTY(EditAnywhere, Category = "Custom Variables")
+	class UParticleSystem* DeathParticles;
+
+	UPROPERTY(EditAnywhere, Category = "Custom Variables")
+	class USoundBase* DeathSound;
+
 	UFUNCTION()
 	void OnOverlap(
 		UPrimitiveComponent* OverlappedComponent,

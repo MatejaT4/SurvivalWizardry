@@ -24,6 +24,9 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	class UBoxComponent* CollisionMesh;
 
+	UPROPERTY(EditAnywhere, Category = "Custom Variables")
+	TArray<class USoundBase*> PickUpSounds;
+
 	UFUNCTION()
 	void OnOverlap(
 		UPrimitiveComponent* OverlappedComponent,

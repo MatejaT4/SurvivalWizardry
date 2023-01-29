@@ -8,6 +8,8 @@
 #include "HealthComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "Wizard.h"
+#include "Particles/ParticleSystem.h"
+
 // Sets default values
 AEnemyBase::AEnemyBase()
 {
@@ -24,6 +26,7 @@ AEnemyBase::AEnemyBase()
 void AEnemyBase::BeginPlay()
 {
 	Super::BeginPlay();
+	wizard = Cast<AWizard>(UGameplayStatics::GetPlayerPawn(this,0));
 	CollisionMesh->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBase::OnOverlap);
 	HealthComponent->MaxHealth = MaxHealth;
 	HealthComponent->Health = MaxHealth;
@@ -75,8 +78,16 @@ void AEnemyBase::OnOverlap(
 	}
 }
 
-void AEnemyBase::HandleDestruction()
+void AEnemyBase::HandleDestruction() 
 {
     Destroy();
+	if(DeathSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation());
+	}	
+	if (DeathParticles)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(this, DeathParticles, GetActorLocation(), GetActorRotation());
+	}
 }
 
