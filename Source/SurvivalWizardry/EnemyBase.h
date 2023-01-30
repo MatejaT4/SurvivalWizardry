@@ -28,6 +28,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Experience = 10.f;
 
+	class UBoxComponent* GetCollision();
+
 protected:
 	virtual void BeginPlay() override;
 

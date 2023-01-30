@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "SpellStructure.h"
 #include "SpellBase.generated.h"
 
 UCLASS()
@@ -16,6 +17,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	float Damage = 100.f;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float Size = 1.f;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Level", meta = (AllowPrivateAccess = "true"))
 	int Lvl = 1;
@@ -36,7 +40,9 @@ public:
 
 	void UnpauseCasting();
 	
-	void InitializeParameters();
+	void LevelUp();
+	
+	void Initialize(FSpellStructure* Row);
 protected:
 	virtual void BeginPlay() override;
 	

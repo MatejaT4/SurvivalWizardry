@@ -14,7 +14,6 @@ AProjectileBase::AProjectileBase()
 
 	CollisionMesh = CreateDefaultSubobject<UBoxComponent>(FName("Collision Mesh"));
 	SetRootComponent(CollisionMesh);
-
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement")); 
 }
 
@@ -22,10 +21,31 @@ void AProjectileBase::BeginPlay()
 {
 	Super::BeginPlay();
 
+	CollisionMesh->OnComponentBeginOverlap.AddDynamic(this, &AProjectileBase::OnOverlap);
+}
+
+void AProjectileBase::Initialize(float damage, float size, int numberOfPierces)
+{
+	if(IsHoming)
+	{
+		TArray<AActor*> FoundActors;
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), AEnemyBase::StaticClass(), FoundActors);
+		float Distance;
+		AEnemyBase* Target = Cast<AEnemyBase>(UGameplayStatics::FindNearestActor(GetActorLocation(), FoundActors, Distance));
+		if(Target){
+			ProjectileMovement->HomingTargetComponent = Target->GetCollision();
+			ProjectileMovement->bIsHomingProjectile = true;
+			ProjectileMovement->HomingAccelerationMagnitude = 5000.f;
+		}
+		
+	}
 	ProjectileMovement->InitialSpeed=Speed;
 	ProjectileMovement->MaxSpeed=Speed;
+	Damage=damage;
+	Size=size;
+	NumberOfPierces=numberOfPierces;
+	CollisionMesh->SetWorldScale3D(FVector(Size, Size, Size));
 
-	CollisionMesh->OnComponentBeginOverlap.AddDynamic(this, &AProjectileBase::OnOverlap);
 }
 
 void AProjectileBase::Tick(float DeltaTime)
@@ -47,12 +67,22 @@ void AProjectileBase::OnOverlap(
 	{
 		if(Cast<AEnemyBase>(OtherActor)){
 			UGameplayStatics::ApplyDamage(OtherActor, Damage, nullptr, this, DamageTypeClass);
+			--NumberOfPierces;
+			if(NumberOfPierces < 0)
+			{
+				Destroy();
+			}
 		}	
 		else
 		{
 			Destroy();
 		}	
 	}
+}
+
+class UProjectileMovementComponent* AProjectileBase::GetProjectileMovement()
+{
+	return ProjectileMovement;
 }
 
 

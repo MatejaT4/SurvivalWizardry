@@ -7,6 +7,7 @@
 #include "TimerManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "Wizard.h"
+#include "SpellStructure.h"
 
 ASpellBase::ASpellBase()
 {
@@ -17,7 +18,6 @@ void ASpellBase::BeginPlay()
 {
 	Super::BeginPlay();
 	Wizard = Cast<AWizard>(UGameplayStatics::GetPlayerPawn(this,0));
-	InitializeParameters();
 }
 
 void ASpellBase::Tick(float DeltaTime)
@@ -45,10 +45,19 @@ void ASpellBase::UnpauseCasting()
 	GetWorldTimerManager().UnPauseTimer(CooldownTimerHandle);
 }
 
-void ASpellBase::InitializeParameters()
+void ASpellBase::LevelUp()
 {
+	++Lvl;
 	if(Lvl % 2 == 0) Damage = Damage * 1.5;
 	else CooldownTime = CooldownTime * 0.8; 
+}
+
+void ASpellBase::Initialize(FSpellStructure* Row)
+{
+	ProjectileClass = Row->ProjectileClass;
+	Damage = Row->Damage;
+	CooldownTime = Row->Cooldown;
+	Size = Row->Size;
 }
 
 void ASpellBase::CastProjectile()
@@ -60,7 +69,7 @@ void ASpellBase::CastProjectile()
 	if(Projectile) 
 	{
 		Projectile->SetOwner(this);
-		Projectile->Damage=Damage;
+		Projectile->Initialize(Damage, Size, 10);
 	}
 }
 

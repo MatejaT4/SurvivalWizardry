@@ -21,7 +21,7 @@ void ARadialProjectileSpell::CastProjectile()
         if(Projectile) 
         {
             Projectile->SetOwner(this);
-            Projectile->Damage=Damage;
+            Projectile->Initialize(Damage, Size, 0);
         }  
     }
 }

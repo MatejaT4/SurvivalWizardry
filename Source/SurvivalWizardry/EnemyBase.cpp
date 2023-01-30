@@ -91,3 +91,7 @@ void AEnemyBase::HandleDestruction()
 	}
 }
 
+UBoxComponent* AEnemyBase::GetCollision()
+{
+	return CollisionMesh;
+}

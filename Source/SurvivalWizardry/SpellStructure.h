@@ -25,4 +25,7 @@ struct FSpellStructure : public FTableRowBase
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spell")
 	float Cooldown;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spell")
+	float Size;
 };

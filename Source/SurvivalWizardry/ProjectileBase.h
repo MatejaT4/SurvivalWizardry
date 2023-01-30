@@ -14,24 +14,31 @@ class SURVIVALWIZARDRY_API AProjectileBase : public AActor
 public:	
 	AProjectileBase();
 
+	class UProjectileMovementComponent* GetProjectileMovement();
+
+	bool IsHoming = false;
+
 protected:
 	virtual void BeginPlay() override;
 
 public:	
 	virtual void Tick(float DeltaTime) override;
 
-	float Damage;
-	
+	void Initialize(float damage, float size, int numberOfPierces);
+
 private:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
-	class UBoxComponent* CollisionMesh;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
 	class UProjectileMovementComponent* ProjectileMovement;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	class UBoxComponent* CollisionMesh;
+	
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	float Speed = 1000.f;
-
+	float Damage = 1.f;
+	float Size = 1.f;
+	int NumberOfPierces = 10;
 	UFUNCTION()
 	void OnOverlap(
 		UPrimitiveComponent* OverlappedComponent,
